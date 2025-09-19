@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nord-Parl-TTS Demo Page</title>
+  <script src="./static/tailwind.js"></script>
+  <script src="./static/vue.global.js"></script>
+  <script src="./static/flowbite.min.js"></script>
+  <script src="./static/d3.v7.min.js"></script>
+  <style type="text/tailwindcss">
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+
+    @layer base {
+      a[href^="http"] {
+        @apply text-blue-500;
+      }
+
+      a:hover {
+        @apply text-blue-700 underline;
+      }
+
+      h1 {
+        @apply mb-6 text-4xl font-bold text-gray-900 dark:text-white text-center;
+      }
+
+      h4 {
+        @apply mb-4 pt-12 text-3xl font-semibold text-gray-900 dark:text-white;
+      }
+
+      h5 {
+        @apply mb-3 pt-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white;
+      }
+
+      p {
+        @apply mb-4 font-normal text-gray-900 dark:text-gray-400 leading-relaxed;
+      }
+    }
+
+    @layer components {
+      .list-select {
+        @apply block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent;
+      }
+
+      .tooltip {
+        position: absolute;
+        text-align: center;
+        padding: 8px;
+        font: 12px sans-serif;
+        background: lightsteelblue;
+        border: 0;
+        border-radius: 8px;
+        pointer-events: none;
+        opacity: 0;
+      }
+
+      .text-p {
+        @apply mb-4 font-normal text-gray-900 dark:text-gray-400 leading-relaxed;
+      }
+
+      .author {
+        @apply font-medium mr-2 pb-1 text-gray-900 dark:text-gray-400 inline-block;
+      }
+
+      .affiliation {
+        @apply font-medium mr-2 pb-1 text-gray-900 dark:text-gray-400 block;
+      }
+    }
+  </style>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {}
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="dark:bg-gray-900">
+  <div id="app">
+
+    <nav
+      class="bg-white fixed w-full z-20 top-0 start-0 border-gray-200 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-600">
+      <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-3">
+        <button data-collapse-toggle="navbar-default" type="button"
+          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          aria-controls="navbar-default" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15" />
+          </svg>
+        </button>
+
+        <div class="hidden w-full md:block md:w-auto ml-auto" id="navbar-default">
+          <ul
+            class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <li>
+              <a href="#home" class="list-select">Home</a>
+            </li>
+            <li>
+              <a href="#dataset" class="list-select">Dataset</a>
+            </li>
+            <li>
+              <a href="#demos" class="list-select">Demos</a>
+            </li>
+            <!-- add dataset link here -->
+            <!-- <li>
+              <a href="" class="list-select" target="_blank">
+                <img class="h-6 w-6" src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg"/> 
+              </a>
+            </li> -->
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="p-5 md:p-0 mt-16 max-w-screen-xl mx-auto">
+      <div class="p-6" id="home">
+
+        <div class="mt-8 mb-8">
+          <h1>Nord-Parl-TTS: Finnish and Swedish TTS Dataset from Parliament Speech</h1>
+        </div>
+
+        <div class="flex gap-2 justify-center flex-wrap">
+          <!-- add paper link and dataset link here -->
+          <!-- <a href="" target="_blank">   
+            <img src="https://img.shields.io/badge/arXiv-Paper-COLOR.svg">
+          </a>
+          <a href="" target="_blank">
+            <img src="https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Dataset-yellow">
+          </a> -->
+        </div>
+
+        <div class="max-w-[900px] mx-auto mt-8 mb-16">
+          <div class="text-center pb-10 flex flex-col gap-3">
+            <div class="text-sm">
+              <span class="author">Zirui Li<sup>1</sup> </span>
+              <span class="author">Jens Edlund<sup>2</sup> </span>
+              <span class="author">Yicheng Gu<sup>3</sup> </span>
+              <span class="author">Nhan Phan<sup>1</sup> </span>
+              <span class="author">Lauri Juvela<sup>1</sup> </span>
+              <span class="author">Mikko Kurimo<sup>1</sup> </span>
+            </div>
+            <div class="text-sm">
+              <span class="affiliation"><sup>1</sup> Department of Information and Communications Engineering, Aalto University, Espoo, Finland</span>
+              <span class="affiliation"><sup>2</sup> Speech, Music & Hearing, KTH Royal Institute of Technology, Stockholm, Sweden</span>
+              <span class="affiliation"><sup>3</sup> School of Data Science, The Chinese University of Hong Kong, Shenzhen, China</span>
+            </div>
+          </div>
+          <h5>Abstract</h5>
+          <p class="text-p">
+            Text-to-speech (TTS) development is limited by scarcity of high-quality, 
+            publicly available speech data for most languages outside a few high-resource languages.  
+            We present Nord-Parl-TTS, an open TTS dataset for Finnish and Swedish based on speech found in the wild.
+            Using recordings of Nordic parliamentary proceedings, we extract 900 hours of Finnish and 5090 hours of 
+            Swedish speech suitable for TTS training. The dataset is built using an adapted version of the Emilia 
+            data processing pipeline and includes unified evaluation sets to support model development and benchmarking.
+            By offering open, large-scale data for Finnish and Swedish, Nord-Parl-TTS narrows the resource gap in TTS 
+            between high- and lower-resourced languages.
+          </p>
+        </div>
+
+        <h4 id="dataset">Nord-Parl-TTS</h4>
+
+        <h5 id="dataset-overview">Overview</h5>
+        <p class="text-p">
+          <code>Nord-Parl-TTS</code> is built upon the Parliament recordings from Finland and Sweden. The Finnish subset contains 900 hours of
+          speech data, while the Swedish subset contains 5090 hours of speech data. We show the duration statistics for each language 
+          in the table below.
+        </p>
+
+          <div class="w-[420px] h-[240px] flex mx-auto">
+            <img src="./static/finn_swe_duration.png"></img>
+          </div>
+        </div>
+
+        <h5>Data Preview</h5>
+        <p class="text-p">
+          We show some samples from Nord-Parl-TTS here.
+        </p>
+
+        <!-- data_pipeline_egs:table -->
+        <div class="w-full overflow-x-auto">
+          <div class="relative w-fit mx-auto text-sm text-left rtl:text-right text-gray-900 dark:text-gray-100">
+            <!-- body -->
+            <div v-for="(item, index) in data_pipeline_egs">
+              <div
+                class="flex bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <div class="w-[100px] px-6 h-full my-auto font-bold dark:text-white">{{ item.name }}</div>
+                <div v-for="path in item.path" class="w-[310px] px-4 py-2">
+                  <audio controls>
+                    <source :src="'data/pipeline_egs/' + path">
+                  </audio>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h4 id="pipeline">The Emilia-Pipe Preprocessing Pipeline</h4>
+        <p class="text-p">
+          We show the data processing pipeline for Finnish and Swedish in the figure below. The pipeline is an adapted version of
+          the Emilia data processing pipeline.
+        </p>
+
+        <div class="flex mx-auto justify-center max-w-screen-lg py-8">
+          <img src="./static/pipeline.png"></img>
+        </div>
+
+
+        <h4 id="demos">Demos</h4>
+        <p class="text-p">
+          In this section, we show samples from two monolingual TTS models trained on Nord-Parl-TTS: Matcha-TTS and F5-TTS.
+        </p>
+
+        <!-- data_multilingual_egs:table -->
+        <div class="w-full overflow-x-auto my-4">
+          <div class="relative  w-[1026px] mx-auto text-sm text-left rtl:text-right text-gray-900 dark:text-gray-100">
+            <div class="flex text-center bg-gray-50 dark:bg-gray-700">
+              <div v-for="item in [{name: 'Language', width: 126}, ...data_multilingual_egs_sounds]" scope="col"
+                :class="'w-[' + (item.width ?? 300) +'px] shrink-0 px-6 py-4 font-bold'">{{
+                item.name }}</div>
+            </div>
+
+            <!-- body -->
+            <div v-for="(lang_egs, index) in data_multilingual_egs">
+              <div
+                class="flex w-full bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <div
+                  class="shrink-0 border-b w-[126px] flex px-6 py-4 font-bold justify-center items-center dark:text-white">
+                  {{
+                  lang_egs.name }}</div>
+
+                <div>
+                  <div v-for="item in lang_egs.items">
+                    <div
+                      class="flex bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                      <div class="ml-[280px] px-6 py-4 font-base dark:text-white"><b>Target Text:</b> {{
+                        item.targetText
+                        }}
+                      </div>
+                    </div>
+                    <div
+                      class="flex bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                      <div v-for="sound in data_multilingual_egs_sounds" class="w-[300px] px-4 py-2">
+                        <audio controls class="mx-auto w-[280px]" controlsList="nodownload noremoteplayback">
+                          <source :src="'data/multilingual_egs/' + lang_egs.path + '/' + item.path + '/' + sound.path">
+                        </audio>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const app = Vue.createApp({
+      setup() {
+
+        const data_pipeline_egs = [
+          {
+            name: "Finnish",
+            path: [
+              "fi_1.mp3",
+              "fi_2.mp3",
+              "fi_3.mp3",
+            ]
+          },
+          {
+            name: "Swedish",
+            path: [
+              "sv_1.mp3",
+              "sv_2.mp3",
+              "sv_3.mp3",
+            ]
+          },
+        ]
+
+        const data_multilingual_egs_sounds = [
+          {
+            name: "Speech Prompt",
+            path: "ref.wav"
+          },
+          {
+            name: "Matcha-TTS",
+            path: "matcha.wav"
+          },
+          {
+            name: "F5-TTS",
+            path: "f5.wav"
+          }
+        ]
+
+        const data_multilingual_egs = [
+          {
+            name: "Finnish",
+            path: "fi",
+            items: [
+              {
+                path: "1",
+                targetText: "Ishmael maleksii Marrakeshin kujilla"
+              },
+              {
+                path: "2",
+                targetText: "Molempien aivoperusta perustuu lopulta liikkeiden tuottamiseen ja havaitsemiseen vaikka aistiva elin on eri."
+              }
+            ]
+          },
+          {
+            name: "Swedish",
+            path: "sv",
+            items: [
+              {
+                path: "1",
+                targetText: "Eleverna saknar fortfarande förmågan att abstrahera"
+              },
+              {
+                path: "2",
+                targetText: "Dataskyddskonventionen innehåller de grundläggande principerna för dataskydd."
+              }
+            ]
+          }
+        ]
+
+        return {
+          data_pipeline_egs,
+          data_multilingual_egs_sounds,
+          data_multilingual_egs,
+        }
+      }
+    })
+
+    app.mount('#app')
+  </script>
+</body>
+
+</html>
